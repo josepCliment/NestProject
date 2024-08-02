@@ -6,17 +6,10 @@ import { DatabaseModule } from './common/database/database.module';
 import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 
+//CommonModule, AuthModule
+
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env',
-      ignoreEnvFile: true,
-      isGlobal: true
-    }),
-    DatabaseModule,
-    AuthModule,
-    CommonModule,
-  ],
+  imports: [CommonModule, AuthModule],
   controllers: [AppController],
   providers: [
     {

@@ -25,7 +25,6 @@ export class AuthController {
    *  Login function
    * @param loginUserDTO - The user login props
    */
-  @HttpCode(HttpStatus.OK)
   @Post('login')
   login(
     @Body() loginUserDTO: LoginUserDTO,
@@ -39,7 +38,7 @@ export class AuthController {
    */
 
   @Post('register')
-  register(@Body() registerUserDTO: CreateUserDTO): Promise<User> {
+  register(@Body() registerUserDTO: CreateUserDTO): Promise<boolean> {
     return this.registerService.registerAccount(registerUserDTO);
   }
 }

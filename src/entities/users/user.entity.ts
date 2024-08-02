@@ -1,9 +1,9 @@
-import { Column, Entity, Table } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { GenericEntity } from '../entities/entity.entity';
 
 @Entity('users')
 export class User extends GenericEntity {
-  @Column({ unique: true })
+  @Column()
   nickname: string;
 
   @Column({ unique: true })

@@ -6,6 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
+import { RpcException } from '@nestjs/microservices';
 
 @Catch()
 export class AllExceptionFilter<T> implements ExceptionFilter {
@@ -15,21 +16,21 @@ export class AllExceptionFilter<T> implements ExceptionFilter {
     // In certain situations `httpAdapter` might not be available in the
     // constructor method, thus we should resolve it here.
     const { httpAdapter } = this.httpAdapterHost;
-  
-    const ctx = host.switchToHttp();
 
+    const ctx = host.switchToHttp();
+    
     const httpStatus =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     const responseBody = {
-      statusCode: httpStatus,
+      // statusCode: httpStatus,
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
+      message: String(exception),
     };
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
-    
   }
 }

@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Catch, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+import { RpcException } from '@nestjs/microservices';
 
-
+@Catch()
 @Injectable()
 export class UserService {
   constructor(
@@ -17,16 +18,21 @@ export class UserService {
     email: string,
     password: string,
     nickname: string,
-  ): Promise<User> {
+  ): Promise<User | boolean> {
+    //check if email exists
+    const userExists = await this.findByEmail(email);
+    console.info('Checking if user exists..');
+    if (userExists) {
+      return false;
+    }
+
     const user = new User();
     user.email = email;
     user.nickname = nickname;
-
-    //encrypt password
-    const salt = await bcrypt.genSalt();
-    user.password = await bcrypt.hash(password, salt);
-
-    return this.UsersRepository.save(user);
+    console.info('Encrypting password');
+    user.password = await bcrypt.hash(password, +process.env.SECRET);
+    console.info('Creating the user..');
+    return await this.UsersRepository.save(user);
   }
 
   //Find the user by email

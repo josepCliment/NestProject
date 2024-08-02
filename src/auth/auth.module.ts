@@ -6,15 +6,16 @@ import { UserService } from 'src/entities/users/user.service';
 import { AuthController } from './auth.controller';
 import { LoginService } from './login/login.service';
 import { RegisterService } from './register/register.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  providers: [LoginService, RegisterService, UserService],
+  providers: [ConfigModule, LoginService, RegisterService, UserService],
   controllers: [AuthController],
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       global: true,
-      secret: process.env.SECRET || "pepe",
+      secret: process.env.SECRET,
       signOptions: { expiresIn: '60s' },
     }),
   ],
