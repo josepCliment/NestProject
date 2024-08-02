@@ -4,7 +4,4 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 export class GenericEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  genericField: string;
 }
