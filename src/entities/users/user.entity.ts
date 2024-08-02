@@ -1,17 +1,14 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, Table } from 'typeorm';
 import { GenericEntity } from '../entities/entity.entity';
 
-@Entity()
+@Entity('users')
 export class User extends GenericEntity {
-  @Column()
-  firstName: string;
+  @Column({ unique: true })
+  nickname: string;
 
-  @Column()
-  lastName: string;
-
-  @Column()
+  @Column({ unique: true })
   email: string;
-  
+
   @Column()
   password: string;
 }

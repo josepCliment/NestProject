@@ -1,13 +1,28 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { DatabaseModule } from './common/database/database.module';
+import { APP_PIPE } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [AuthModule, CommonModule, DatabaseModule],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      ignoreEnvFile: true,
+      isGlobal: true
+    }),
+    DatabaseModule,
+    AuthModule,
+    CommonModule,
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AppModule {}
