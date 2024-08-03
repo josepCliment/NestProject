@@ -56,7 +56,7 @@ export class AuthService {
    * @param registerUserDTO - The User structure
    * @returns
    */
-  async registerAccount(registerUserDTO: UserDTO): Promise<boolean> {
+  async registerAccount(registerUserDTO: UserDTO): Promise<{status: boolean}> {
     const userCreated = await this.userService.create(
       registerUserDTO.email,
       registerUserDTO.password,
@@ -65,6 +65,6 @@ export class AuthService {
     if (!userCreated) {
       throw new HttpException('User already exists', 400);
     }
-    return true;
+    return {status: true};
   }
 }

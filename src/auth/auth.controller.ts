@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 import { CreateUserDTO } from './dto/createUser.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { LoginUserDTO } from './dto/loginUser.dto';
+import { Public } from 'src/decorators/public-routes/public-routes.decorator';
 @Catch()
 @Controller('auth')
 export class AuthController {
@@ -19,6 +20,7 @@ export class AuthController {
    *  Login function
    * @param loginUserDTO - The user login props
    */
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req): Promise<boolean | { access_token: string }> {
@@ -30,8 +32,9 @@ export class AuthController {
    * @param registerUserDTO - User register props
    */
 
+  @Public()
   @Post('register')
-  register(@Body() registerUserDTO: CreateUserDTO): Promise<boolean> {
+  register(@Body() registerUserDTO: CreateUserDTO): Promise<{status:boolean}> {
     return this.authService.registerAccount(registerUserDTO);
   }
 }
