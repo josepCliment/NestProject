@@ -43,7 +43,7 @@ export class AuthService {
     
     //Generate JST Token
     console.log({user});
-    const payload = { sub: user.id, nickname: user.nickname };
+    const payload = { sub: user.email, nickname: user.nickname };
     return {
       access_token: this.jwtService.sign(payload, {
         secret: process.env.JWT_KEY,
