@@ -9,19 +9,20 @@ async function bootstrap() {
 
   const httpAdapter = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionFilter(httpAdapter));
-
   setUpSwagger(app);
-  //Use validation pipelines fot the inputs
-  setUpGlobals(app)
+
+  setUpGlobals(app);
   await app.listen(3010);
 
-  if (module.hot) {
-    module.hot.accept();
-    module.hot.dispose(() => app.close());
-  }
+  setUpWebPackapp(app);
 }
 bootstrap();
 
+
+/**
+ *  Function to set up the swagger
+ * @param app The application
+ */
 function setUpSwagger(app: INestApplication<any>) {
   const config = new DocumentBuilder()
     .setTitle('Chat API')
@@ -33,10 +34,24 @@ function setUpSwagger(app: INestApplication<any>) {
   SwaggerModule.setup('api', app, document);
 }
 
+
+
 function setUpGlobals(app: INestApplication<any>) {
+  //Use validation pipelines fot the inputs
   app.useGlobalPipes(
     new ValidationPipe({
       disableErrorMessages: true,
     }),
   );
+}
+
+/**
+ *  Function to set up the webpack for hot reload
+ * @param app 
+ */
+function setUpWebPackapp(app: INestApplication<any>) {
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
