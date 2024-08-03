@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AllExceptionFilter } from './all-exception-filter/all-exception-filter.filter';
-
+declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -14,6 +14,11 @@ async function bootstrap() {
   //Use validation pipelines fot the inputs
   setUpGlobals(app)
   await app.listen(3010);
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 bootstrap();
 

@@ -14,9 +14,10 @@ import { join } from 'path';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      entities: [join(__dirname, '../**/**.entity{.ts,.js}')],
+      entities: [join(__dirname,'**', '../**/**.entity{.ts,.js}')],
       synchronize: true,
     }),
   ],
 })
 export class DatabaseModule {}
+ 
