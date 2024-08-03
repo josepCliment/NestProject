@@ -34,10 +34,14 @@ export class LoginService {
       throw new HttpException('Invalid crendentials.', 401);
     }
 
+    console.log('Generating JWT token..');
+
     //Generate JST Token
     const payload = { sub: user.id, nickname: user.nickname };
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token: await this.jwtService.signAsync(payload, {
+        secret: process.env.JWT_KEY,
+      }),
     };
   }
 }
