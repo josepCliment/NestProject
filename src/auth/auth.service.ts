@@ -40,13 +40,13 @@ export class AuthService {
     }
 
     console.log('Generating JWT token..');
-
+    
     //Generate JST Token
+    console.log({user});
     const payload = { sub: user.id, nickname: user.nickname };
     return {
       access_token: this.jwtService.sign(payload, {
-        secret: process.env.JWT_SECRET,
-        privateKey: process.env.JWT_PRIVATE_KEY,
+        secret: process.env.JWT_KEY,
       }),
     };
   }

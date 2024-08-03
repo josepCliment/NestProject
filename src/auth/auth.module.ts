@@ -7,13 +7,14 @@ import { UserService } from 'src/entities/users/user.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './guards/local.strategy';
+import { JwtStrategy } from './guards/jwt.strategy';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_KEY,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '3600s' },
     }),
   ],
   providers: [AuthService, UserService, LocalStrategy],

@@ -9,6 +9,7 @@ import {
 import { AuthService } from './auth.service';
 import { CreateUserDTO } from './dto/createUser.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { LoginUserDTO } from './dto/loginUser.dto';
 @Catch()
 @Controller('auth')
 export class AuthController {

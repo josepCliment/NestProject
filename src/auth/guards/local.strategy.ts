@@ -12,11 +12,11 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(username: string, password: string): Promise<any> {
+  async validate(email: string, password: string): Promise<any> {
     console.log('Validating the user..');
 
     const jwtToken = await this.authService.login({
-      email: username,
+      email,
       password,
     });
     return jwtToken;

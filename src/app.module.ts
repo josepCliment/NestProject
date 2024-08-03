@@ -5,6 +5,7 @@ import { CommonModule } from './common/common.module';
 import { DatabaseModule } from './common/database/database.module';
 import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
+import { JwtStrategy } from './auth/guards/jwt.strategy';
 
 //CommonModule, AuthModule
 
@@ -16,6 +17,7 @@ import { ConfigModule } from '@nestjs/config';
       provide: APP_PIPE,
       useClass: ValidationPipe,
     },
+    JwtStrategy
   ],
 })
 export class AppModule {}
