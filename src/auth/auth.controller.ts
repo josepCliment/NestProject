@@ -2,34 +2,26 @@ import {
   Body,
   Catch,
   Controller,
-  HttpCode,
-  HttpStatus,
   Post,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthService } from './auth.service';
 import { CreateUserDTO } from './dto/createUser.dto';
-import { LoginUserDTO } from './dto/loginUser.dto';
-import { LoginService } from './login/login.service';
-import { RegisterService } from './register/register.service';
-import { RpcException } from '@nestjs/microservices';
-import { User } from 'src/entities/users/user.entity';
-
+import { LocalAuthGuard } from './guards/local-auth.guard';
 @Catch()
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly loginService: LoginService,
-    private readonly registerService: RegisterService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   /**
    *  Login function
    * @param loginUserDTO - The user login props
    */
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  login(
-    @Body() loginUserDTO: LoginUserDTO,
-  ): Promise<boolean | { access_token: string }> {
-    return this.loginService.login(loginUserDTO);
+  login(@Request() req): Promise<boolean | { access_token: string }> {
+    return req.user;
   }
 
   /**
@@ -39,6 +31,6 @@ export class AuthController {
 
   @Post('register')
   register(@Body() registerUserDTO: CreateUserDTO): Promise<boolean> {
-    return this.registerService.registerAccount(registerUserDTO);
+    return this.authService.registerAccount(registerUserDTO);
   }
 }
